@@ -54,6 +54,11 @@
                                 <div>
                                     Payment Status: <strong>{{ $purchase->payment_status }}</strong>
                                 </div>
+                                @if($quotation->payment_evidence!=null)
+                                <div>
+                                    Bukti Pembayaran: <a href="{{$quotation->payment_evidence}}" target="_blank" class="btn btn-success">Lihat</a>
+                                </div>
+                                @endif
                             </div>
 
                         </div>
