@@ -63,8 +63,12 @@
                                         <label for="status">Status <span class="text-danger">*</span></label>
                                         <select class="form-control" name="status" id="status" required>
                                             <option value="Pending">Pending</option>
-                                            <option value="Ordered">Sedang Dikirim</option>
-                                            <option value="Completed">Terkirim</option>
+                                            <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
+                                            <option value="Pembayaran Dikonfirmasi">Pembayaran Dikonfirmasi</option>
+                                            <option value="Diproses">Diproses</option>
+                                            <option value="Sedang Dikirim">Sedang Dikirim</option>
+                                            <option value="Selesai">Selesai</option>
+                                            <option value="Sent">Terkirim</option>
                                         </select>
                                     </div>
                                 </div>

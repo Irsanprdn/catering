@@ -62,9 +62,13 @@
                                     <div class="form-group">
                                         <label for="status">Status <span class="text-danger">*</span></label>
                                         <select class="form-control" name="status" id="status" required>
-                                            <option {{ $purchase->status == 'Pending' ? 'selected' : '' }} value="Pending">Pending</option>
-                                            <option {{ $purchase->status == 'Ordered' ? 'selected' : '' }} value="Ordered">Sedang Dikirim</option>
-                                            <option {{ $purchase->status == 'Completed' ? 'selected' : '' }} value="Completed">Terkirim</option>
+                                            <option {{ $quotation->status == 'Pending' ? 'selected' : '' }} value="Pending">Pending</option>
+                                            <option {{ $quotation->status == 'Pembayaran Dikonfirmasi' ? 'selected' : '' }} value="Pembayaran Dikonfirmasi">Pembayaran Dikonfirmasi</option>
+                                            <option {{ $quotation->status == 'Menunggu Pembayaran' ? 'selected' : '' }} value="Menunggu Pembayaran">Menunggu Pembayaran</option>
+                                            <option {{ $quotation->status == 'Diproses' ? 'selected' : '' }} value="Diproses">Diproses</option>
+                                            <option {{ $quotation->status == 'Selesai' ? 'selected' : '' }} value="Selesai">Selesai</option>
+                                            <option {{ $quotation->status == 'Sedang Dikirim' ? 'selected' : '' }} value="Sedang Dikirim">Sedang Dikirim</option>
+                                            <option {{ $quotation->status == 'Sent' ? 'selected' : '' }} value="Sent">Terkirim</option>
                                         </select>
                                     </div>
                                 </div>
