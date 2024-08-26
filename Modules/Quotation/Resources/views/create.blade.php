@@ -65,6 +65,7 @@
                                         <select class="form-control" name="status" id="status" required>
                                             <option value="Pending">Pending</option>
                                             <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
+                                            <option value="Menunggu Konfirmasi Pembayaran">Menunggu Konfirmasi Pembayaran</option>
                                             <option value="Pembayaran Dikonfirmasi">Pembayaran Dikonfirmasi</option>
                                             <option value="Diproses">Diproses</option>
                                             <option value="Selesai">Selesai</option>
