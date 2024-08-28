@@ -46,6 +46,7 @@ class QuotationController extends Controller
                 'total_amount' => $request->total_amount * 100,
                 'status' => $request->status,
                 'note' => $request->note,
+                'payment_evidence' => $request->payment_evidence??null,
                 'tax_amount' => Cart::instance('quotation')->tax() * 100,
                 'discount_amount' => Cart::instance('quotation')->discount() * 100,
             ]);

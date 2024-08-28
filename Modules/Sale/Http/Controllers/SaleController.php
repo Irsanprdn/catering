@@ -59,6 +59,7 @@ class SaleController extends Controller
                 'status' => $request->status,
                 'payment_status' => $payment_status,
                 'payment_method' => $request->payment_method,
+                'payment_evidence' => $request->payment_evidence??null,
                 'note' => $request->note,
                 'tax_amount' => Cart::instance('sale')->tax() * 100,
                 'discount_amount' => Cart::instance('sale')->discount() * 100,

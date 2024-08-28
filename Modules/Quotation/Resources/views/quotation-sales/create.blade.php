@@ -25,7 +25,7 @@
                         @include('utils.alerts')
                         <form id="sale-form" action="{{ route('sales.store') }}" method="POST">
                             @csrf
-
+                            <input type="hidden" value=""{{$sale->payment_evidence}}>
                             <div class="form-row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
@@ -63,8 +63,12 @@
                                         <label for="status">Status <span class="text-danger">*</span></label>
                                         <select class="form-control" name="status" id="status" required>
                                             <option value="Pending">Pending</option>
-                                            <option value="Shipped">Dalam Pengiriman</option>
-                                            <option value="Completed">Terkirim</option>
+                                            <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
+                                            <option value="Menunggu Konfirmasi Pembayaran">Menunggu Konfirmasi Pembayaran</option>
+                                            <option value="Pembayaran Dikonfirmasi">Pembayaran Dikonfirmasi</option>
+                                            <option value="Diproses">Diproses</option>
+                                            <option value="Selesai">Selesai</option>
+                                            <option value="Sent">Terkirim</option>
                                         </select>
                                     </div>
                                 </div>
@@ -97,6 +101,10 @@
 
                             <div class="form-group">
                                 <label for="note">Note</label>
+                                <textarea name="note" id="note" rows="5" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="note">Bukti Bayar</label>
                                 <textarea name="note" id="note" rows="5" class="form-control"></textarea>
                             </div>
 
