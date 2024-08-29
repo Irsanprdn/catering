@@ -78,6 +78,70 @@
 
     </section><!-- /Hero Section -->
 
+    <section id="cek-pesanan" class="cek-pesanan section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Cek Pesanan</h2>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <form action="#">
+              <div class="input-group mb-3">
+                <input type="text" name="invoice_no" class="form-control" placeholder="Masukan Nomor Invoice" aria-label="Masukan Nomor Invoice" value="{{request('invoice_no')??''}}" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                  <button type="submit" class="input-group-text btn btn-success" id="basic-addon2">Cek</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      @if(isset($pesanan))
+      <div class="container">
+        <h2>Status Pesanan</h2>
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Nomor Invoice</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total Pembayaran</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{$pesanan->date}}</td>
+                <td>INV/{{$pesanan->reference}}</td>
+                <td>{{$pesanan->customer_name}}</td>
+                <td>{{$pesanan->status}}</td>
+                <td>{{$pesanan->total_amount}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Detail Pesanan</h2>
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Menu</th>
+                <th>Harga Menu</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($pesanan->quotationDetails as $v)
+              <tr>
+                <td>{{$v->product_name}}</td>
+                <td>{{$v->price}}</td>
+                <td>{{$v->quantity}}</td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+      </div>
+      @endif
+    </section>
+
     <!-- About Section -->
     <section id="about" class="about section">
 
