@@ -173,65 +173,27 @@
           <p>Produk andalan kami dan bisa juga custom sesuai dengan keinginan pelanggan</p>
         </div><!-- End Section Title -->
 
-        <div class="swiper mySwiper my-5">
-          <div class="swiper-wrapper ">
-
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper  mb-5">
+            @foreach( $product as $p )
             <div class="swiper-slide">
               <div class="pricing-item">
-                <h3>Free Plan</h3>
-                <h4><sup>$</sup>0<span> / month</span></h4>
+                <h3>{{ $p->product_name }}</h3>
+                <p>{{ format_currency($p->product_price) }}<span> / {{ $p->product_unit }}</span></p>
                 <ul>
-                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
+                  <li><i class="bi bi-check"></i> {{ $p->product_note ?? 'N/A' }}</li>
+                  <li class="d-flex justify-content-center" style="height:150px;">
+                    @forelse($p->getMedia('images') as $media)
+                    <img src="{{ $media->getUrl() }}" alt="Product Image"  class=" w-auto position-relative img-fluid img-thumbnail mb-2">
+                    @empty
+                    <img src="{{ $product->getFirstMediaUrl('images') }}" alt="Product Image" style="height:150px;" class=" w-auto position-relative img-fluid img-thumbnail mb-2">
+                    @endforelse
+                  </li>
                 </ul>
                 <div class="text-center"><a href="#" class="buy-btn">Pesan sekarang</a></div>
               </div>
             </div>
-            <div class="swiper-slide">
-              <div class="pricing-item">
-                <h3>Free Plan</h3>
-                <h4><sup>$</sup>0<span> / month</span></h4>
-                <ul>
-                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-                </ul>
-                <div class="text-center"><a href="#" class="buy-btn">Pesan sekarang</a></div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="pricing-item">
-                <h3>Free Plan</h3>
-                <h4><sup>$</sup>0<span> / month</span></h4>
-                <ul>
-                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-                </ul>
-                <div class="text-center"><a href="#" class="buy-btn">Pesan sekarang</a></div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="pricing-item">
-                <h3>Free Plan</h3>
-                <h4><sup>$</sup>0<span> / month</span></h4>
-                <ul>
-                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
-                  <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-                </ul>
-                <div class="text-center"><a href="#" class="buy-btn">Pesan sekarang</a></div>
-              </div>
-            </div>
+            @endforeach
 
           </div>
         </div>

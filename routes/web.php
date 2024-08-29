@@ -13,9 +13,8 @@ Route::get('/', function () {
 })->middleware('guest');
 
 
-Route::get('/catering', function () {
-    return view('front.index');
-});
+Route::get('/catering', 'HomeController@front')->name('front');
+Route::get('/catering/order', 'HomeController@frontOrder')->name('front.order');
 
 Auth::routes(['register' => false]);
 

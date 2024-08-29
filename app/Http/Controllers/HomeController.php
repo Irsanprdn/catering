@@ -13,9 +13,22 @@ use Modules\Sale\Entities\Sale;
 use Modules\Sale\Entities\SalePayment;
 use Modules\SalesReturn\Entities\SaleReturn;
 use Modules\SalesReturn\Entities\SaleReturnPayment;
+use Modules\Product\Entities\Product;
 
 class HomeController extends Controller
-{
+{   
+
+    public function front(){
+        $product = Product::get();
+
+        return view('front.index', compact('product'));
+    }
+
+    public function frontOrder(){
+        $product = Product::get();
+
+        return view('front.order', compact('product'));
+    }
 
     public function index() {
         $sales = Sale::completed()->sum('total_amount');

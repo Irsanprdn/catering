@@ -14,8 +14,11 @@ use Modules\Sale\Entities\SalePayment;
 use Modules\SalesReturn\Entities\SaleReturn;
 use Modules\SalesReturn\Entities\SaleReturnPayment;
 
+
+
 class HomeController extends Controller
 {
+
 
     public function index() {
         $sales = Sale::completed()->sum('total_amount');
