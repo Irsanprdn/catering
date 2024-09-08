@@ -190,7 +190,7 @@
                     @endforelse
                   </li>
                 </ul>
-                <div class="text-center"><a href="#" class="buy-btn">Pesan sekarang</a></div>
+                <div class="text-center"><a href="{{ route('front.order', $p->id) }}" class="buy-btn">Pesan sekarang</a></div>
               </div>
             </div>
             @endforeach

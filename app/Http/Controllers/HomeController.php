@@ -14,27 +14,113 @@ use Modules\Sale\Entities\SalePayment;
 use Modules\SalesReturn\Entities\SaleReturn;
 use Modules\SalesReturn\Entities\SaleReturnPayment;
 use Modules\Product\Entities\Product;
+use Illuminate\Http\Request;
+use Modules\People\Entities\Customer;
+use Modules\Quotation\Entities\Quotation;
+use Modules\Quotation\Entities\QuotationDetails;
 
 class HomeController extends Controller
-{   
+{
 
-    public function front(){
+    public function front()
+    {
         $product = Product::get();
 
         return view('front.index', compact('product'));
     }
 
-    public function frontOrder(){
-        $product = Product::get();
+    public function frontOrder($id)
+    {
+        $order = Product::find($id);
 
-        return view('front.order', compact('product'));
+        $product = Product::get();
+        return view('front.order', compact('product', 'order'));
     }
 
-    public function index() {
+    public function store(Request $request)
+    {
+        // Validasi input dari form
+        $request->validate([
+            'nama_penerima' => 'required|string',
+            'no_hp' => 'required|string',
+            'email' => 'required|email',
+            'negara' => 'required|string',
+            'kota_kabupaten' => 'required|string',
+            'alamat_lengkap' => 'required|string',
+            'metode_pembayaran' => 'required|string',
+            'bukti_pembayaran' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // Validasi file
+            'pesanan' => 'required|json',
+        ]);
+
+        // Upload file
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            $filePath = $file->store('uploads/bukti-pembayaran', 'public');
+        }
+
+        $customer = Customer::where('customer_email', $request->email)->first();
+
+        if (!$customer) {
+            // Jika tidak ditemukan, buat data baru
+            $customer = new Customer();
+            $customer->customer_name = $request->nama_penerima;
+            $customer->customer_phone = $request->no_hp;
+            $customer->customer_email = $request->email;
+            $customer->country = $request->negara;
+            $customer->city = $request->kota_kabupaten;
+            $customer->address = $request->alamat_lengkap;
+            $customer->save();
+        }
+        // Dapatkan entri Quotation terakhir berdasarkan reference secara descending
+        $lastQuotation = Quotation::orderBy('reference', 'desc')->first();
+
+        if ($lastQuotation) {
+            // Ambil bagian angka dari reference terakhir, misalnya dari 'QT-00001' menjadi '1'
+            $lastNumber = intval(substr($lastQuotation->reference, 3));
+
+            // Tambahkan satu pada angka terakhir
+            $newNumber = $lastNumber + 1;
+        } else {
+            // Jika tidak ada quotation sebelumnya, mulai dari 1
+            $newNumber = 1;
+        }
+
+        // Format nomor baru agar selalu 5 digit, misalnya 1 menjadi '00001'
+        $newReference = 'QT-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+        // Dapatkan ID customer
+        $customerId = $customer->id;
+        $customerName = $customer->customer_name;
+        $quotation = new Quotation();
+        $quotation->reference = $newReference;
+        $quotation->date = date('Y-m-d');
+        $quotation->customer_id = $customerId;
+        $quotation->customer_name = $customerName;
+        $quotation->total_amount = $request->total_harga;
+        $quotation->payment_status = $request->metode_pembayaran;
+        $quotation->payment_evidence = $filePath; // Simpan path file
+        $quotation->save();
+
+        // Simpan detail pesanan (opsional)
+        $items = json_decode($request->pesanan, true);
+        foreach ($items as $item) {
+            $detailPesanan = new QuotationDetails();
+            $detailPesanan->pesanan_id = $quotation->id;
+            $detailPesanan->product_id = $item['id'];
+            $detailPesanan->quantity = $item['qty'];
+            $detailPesanan->price = $item['price'];
+            $detailPesanan->save();
+        }
+
+        return response()->json(['success' => true, 'message' => 'Pesanan berhasil disimpan']);
+    }
+
+    public function index()
+    {
         $sales = Sale::completed()->sum('total_amount');
         $sale_returns = SaleReturn::completed()->sum('total_amount');
-        
-        
+
+
         $product_costs = 0;
 
         foreach (Sale::completed()->with('saleDetails')->get() as $sale) {
@@ -51,32 +137,34 @@ class HomeController extends Controller
         return view('home', [
             'revenue'          => $revenue,
             'sale_returns'     => $sale_returns / 100,
-           
+
             'profit'           => $profit
         ]);
     }
 
 
-    public function currentMonthChart() {
+    public function currentMonthChart()
+    {
         abort_if(!request()->ajax(), 404);
 
         $currentMonthSales = Sale::where('status', 'Completed')->whereMonth('date', date('m'))
-                ->whereYear('date', date('Y'))
-                ->sum('total_amount') / 100;
-      
+            ->whereYear('date', date('Y'))
+            ->sum('total_amount') / 100;
+
         $currentMonthExpenses = Expense::whereMonth('date', date('m'))
-                ->whereYear('date', date('Y'))
-                ->sum('amount') / 100;
+            ->whereYear('date', date('Y'))
+            ->sum('amount') / 100;
 
         return response()->json([
             'sales'     => $currentMonthSales,
-           
+
             'expenses'  => $currentMonthExpenses
         ]);
     }
 
 
-    public function salesPurchasesChart() {
+    public function salesPurchasesChart()
+    {
         abort_if(!request()->ajax(), 404);
 
         $sales = $this->salesChartData();
@@ -86,7 +174,8 @@ class HomeController extends Controller
     }
 
 
-    public function paymentChart() {
+    public function paymentChart()
+    {
         abort_if(!request()->ajax(), 404);
 
         $dates = collect();
@@ -163,7 +252,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function salesChartData() {
+    public function salesChartData()
+    {
         $dates = collect();
         foreach (range(-6, 0) as $i) {
             $date = Carbon::now()->addDays($i)->format('d-m-y');
@@ -195,7 +285,8 @@ class HomeController extends Controller
     }
 
 
-    public function purchasesChartData() {
+    public function purchasesChartData()
+    {
         $dates = collect();
         foreach (range(-6, 0) as $i) {
             $date = Carbon::now()->addDays($i)->format('d-m-y');
@@ -224,6 +315,5 @@ class HomeController extends Controller
         }
 
         return response()->json(['data' => $data, 'days' => $days]);
-
     }
 }

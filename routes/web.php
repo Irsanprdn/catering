@@ -14,7 +14,8 @@ Route::get('/', function () {
 
 
 Route::get('/catering', 'HomeController@front')->name('front');
-Route::get('/catering/order', 'HomeController@frontOrder')->name('front.order');
+Route::get('/catering/order/{product}', 'HomeController@frontOrder')->name('front.order');
+Route::post('/order', 'HomeController@order')->name('order');
 
 Auth::routes(['register' => false]);
 
