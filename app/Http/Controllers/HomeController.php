@@ -10,6 +10,7 @@ use Modules\Purchase\Entities\PurchasePayment;
 use Modules\PurchasesReturn\Entities\PurchaseReturn;
 use Modules\PurchasesReturn\Entities\PurchaseReturnPayment;
 use Modules\Sale\Entities\Sale;
+use Modules\Quotation\Entities\Quotation;
 use Modules\Sale\Entities\SalePayment;
 use Modules\SalesReturn\Entities\SaleReturn;
 use Modules\SalesReturn\Entities\SaleReturnPayment;
@@ -25,6 +26,12 @@ class HomeController extends Controller
     public function front()
     {
         $product = Product::get();
+
+        if(request()->has('invoice_no')){
+            $inv_no = str_replace('INV/',"",request('invoice_no'));
+            $pesanan = Quotation::with('quotationDetails')->where('reference',$inv_no)->first();
+            return view('front.index', compact('product','pesanan'));
+        }
 
         return view('front.index', compact('product'));
     }
