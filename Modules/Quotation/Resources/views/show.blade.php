@@ -51,12 +51,12 @@
                                 <div>
                                     Status: <strong>{{ $quotation->status }}</strong>
                                 </div>
-                                <div>
+                                <div class="text-uppercase">
                                     Status Pembayaran: <strong>{{ $quotation->payment_status }}</strong>
                                 </div>
                                 @if($quotation->payment_evidence!=null)
                                 <div>
-                                    Bukti Pembayaran: <a href="{{$quotation->payment_evidence}}" target="_blank" class="btn btn-success">Lihat</a>
+                                    Bukti Pembayaran: <a href="/{{ $quotation->payment_evidence}}" target="_blank" class="btn btn-success">Lihat</a>
                                 </div>
                                 @endif
                             </div>

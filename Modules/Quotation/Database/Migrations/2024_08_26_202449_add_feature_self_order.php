@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::table('quotations', function (Blueprint $table) {
             $table->text("payment_evidence")->nullable();
+            $table->text("payment_status")->nullable();
 
         });
         Schema::table('purchases', function (Blueprint $table) {
             $table->text("payment_evidence")->nullable();
+            $table->text("payment_status")->nullable();
 
         });
     }
@@ -32,10 +34,12 @@ return new class extends Migration
     {
         Schema::table('quotations', function (Blueprint $table) {
             $table->dropColumn("payment_evidence");
+            $table->dropColumn("payment_status");
 
         });
         Schema::table('purchases', function (Blueprint $table) {
             $table->dropColumn("payment_evidence");
+            $table->dropColumn("payment_status");
 
         });
     }

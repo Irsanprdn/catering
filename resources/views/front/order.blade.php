@@ -95,12 +95,12 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="#hero" class="active">Beranda<br></a></li>
-                    <li><a href="#about">Tentang Kami</a></li>
-                    <li><a href="#services">Pelayanan</a></li>
-                    <li><a href="#pricing">Produk</a></li>
-                    <li><a href="#testimonials">Testimoni</a></li>
-                    <li><a href="#contact">Kontak</a></li>
+                    <li><a href="../" class="active">Beranda<br></a></li>
+                    <li><a href="../">Tentang Kami</a></li>
+                    <li><a href="../">Pelayanan</a></li>
+                    <li><a href="../">Produk</a></li>
+                    <li><a href="../">Testimoni</a></li>
+                    <li><a href="../">Kontak</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
@@ -259,7 +259,7 @@
                                                 <!-- Tombol custom untuk memilih gambar -->
                                                 <label class="upload-btn">
                                                     Pilih Gambar
-                                                    <input type="file" id="uploadFoto" accept="image/*" onchange="previewImage()">
+                                                    <input type="file" id="buktiPembayaran" accept="image/*" onchange="previewImage()">
                                                 </label>
 
                                                 <!-- Tempat pratinjau gambar -->
@@ -498,46 +498,46 @@
         function pilihMetodePembayaran() {
 
             // Cek jika nama penerima kosong
-            // if (document.getElementById('namapenerima').value === '') {
-            //     alert('Nama penerima tidak boleh kosong');
-            //     return false;
-            // }
+            if (document.getElementById('namapenerima').value === '') {
+                alert('Nama penerima tidak boleh kosong');
+                return false;
+            }
 
-            // // Cek jika nomor HP penerima kosong
-            // if (document.getElementById('nohp').value === '') {
-            //     alert('Nomer HP penerima tidak boleh kosong');
-            //     return false;
-            // }
+            // Cek jika nomor HP penerima kosong
+            if (document.getElementById('nohp').value === '') {
+                alert('Nomer HP penerima tidak boleh kosong');
+                return false;
+            }
 
-            // // Cek jika email kosong
-            // if (document.getElementById('email').value === '') {
-            //     alert('Email tidak boleh kosong');
-            //     return false;
-            // }
+            // Cek jika email kosong
+            if (document.getElementById('email').value === '') {
+                alert('Email tidak boleh kosong');
+                return false;
+            }
 
-            // // Cek jika negara kosong
-            // if (document.getElementById('negara').value === '') {
-            //     alert('Negara tidak boleh kosong');
-            //     return false;
-            // }
+            // Cek jika negara kosong
+            if (document.getElementById('negara').value === '') {
+                alert('Negara tidak boleh kosong');
+                return false;
+            }
 
-            // // Cek jika kota/kabupaten kosong
-            // if (document.getElementById('kotakab').value === '') {
-            //     alert('Kota/Kabupaten tidak boleh kosong');
-            //     return false;
-            // }
+            // Cek jika kota/kabupaten kosong
+            if (document.getElementById('kotakab').value === '') {
+                alert('Kota/Kabupaten tidak boleh kosong');
+                return false;
+            }
 
-            // // Cek jika alamat lengkap kosong
-            // if (document.getElementById('alamat_lengkap').value === '') {
-            //     alert('Alamat lengkap tidak boleh kosong');
-            //     return false;
-            // }
+            // Cek jika alamat lengkap kosong
+            if (document.getElementById('alamat_lengkap').value === '') {
+                alert('Alamat lengkap tidak boleh kosong');
+                return false;
+            }
 
-            // // Cek jika total harga adalah 0
-            // if (document.getElementById('totalHarga').innerText == '0') {
-            //     alert('Belum ada pesanan yang dipilih');
-            //     return false;
-            // }
+            // Cek jika total harga adalah 0
+            if (document.getElementById('totalHarga').innerText == '0') {
+                alert('Belum ada pesanan yang dipilih');
+                return false;
+            }
 
 
             // Dapatkan elemen dengan ID 'pembayaran-customer-tab'
@@ -554,7 +554,7 @@
         }
 
         function previewImage() {
-            var fileInput = document.getElementById('uploadFoto');
+            var fileInput = document.getElementById('buktiPembayaran');
             var file = fileInput.files[0]; // Dapatkan file yang dipilih
 
             if (file) {
@@ -604,8 +604,7 @@
             }
 
             // Ambil metode pembayaran
-            const totalHarga = document.getElementById('totalHarga').value
-            totalHarga = totalHarga.innerText.replace(/[^0-9]/g, '');;
+            const totalHarga = document.getElementById('totalHarga').innerText.replace(/[^0-9]/g, '');
 
             // Ambil metode pembayaran
             const metodePembayaran = document.getElementById('metodepembayaran').value;
@@ -658,7 +657,7 @@
             formData.append('pesanan', JSON.stringify(items));
 
             // Kirimkan data ke server melalui AJAX
-            fetch('/pesanan', {
+            fetch('/order', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -669,6 +668,8 @@
                 .then(data => {
                     if (data.success) {
                         alert('Pesanan berhasil dikirim');
+                        window.location.reload();
+
                     } else {
                         alert('Terjadi kesalahan: ' + data.message);
                     }

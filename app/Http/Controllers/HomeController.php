@@ -37,7 +37,7 @@ class HomeController extends Controller
         return view('front.order', compact('product', 'order'));
     }
 
-    public function store(Request $request)
+    public function order(Request $request)
     {
         // Validasi input dari form
         $request->validate([
@@ -55,7 +55,10 @@ class HomeController extends Controller
         // Upload file
         if ($request->hasFile('bukti_pembayaran')) {
             $file = $request->file('bukti_pembayaran');
-            $filePath = $file->store('uploads/bukti-pembayaran', 'public');
+            $destinationPath = public_path('uploads/bukti-pembayaran'); // Define the destination path
+            $fileName = time() . '-' . $file->getClientOriginalName(); // Create a unique file name
+            $file->move($destinationPath, $fileName); // Move the file to the public directory
+            $filePath = 'uploads/bukti-pembayaran/' . $fileName; // Construct the file path for use in the view        
         }
 
         $customer = Customer::where('customer_email', $request->email)->first();
@@ -96,7 +99,13 @@ class HomeController extends Controller
         $quotation->date = date('Y-m-d');
         $quotation->customer_id = $customerId;
         $quotation->customer_name = $customerName;
+        $quotation->tax_percentage = 0;
+        $quotation->tax_amount = 0;
+        $quotation->discount_percentage = 0;
+        $quotation->discount_amount = 0;
+        $quotation->shipping_amount = 0;
         $quotation->total_amount = $request->total_harga;
+        $quotation->status = 'Pending';
         $quotation->payment_status = $request->metode_pembayaran;
         $quotation->payment_evidence = $filePath; // Simpan path file
         $quotation->save();
@@ -105,10 +114,19 @@ class HomeController extends Controller
         $items = json_decode($request->pesanan, true);
         foreach ($items as $item) {
             $detailPesanan = new QuotationDetails();
-            $detailPesanan->pesanan_id = $quotation->id;
+            $detailPesanan->quotation_id = $quotation->id;
             $detailPesanan->product_id = $item['id'];
+
+            $product = Product::where('id', $item['id'])->first();
+            $detailPesanan->product_name = $product->product_name;
+            $detailPesanan->product_code = $product->product_code;
+            $detailPesanan->price = $product->product_price;
+            $detailPesanan->unit_price = $product->product_price;
             $detailPesanan->quantity = $item['qty'];
-            $detailPesanan->price = $item['price'];
+            $detailPesanan->sub_total = $product->product_price * $item['qty'];
+            $detailPesanan->product_discount_amount = 0;
+            $detailPesanan->product_discount_type = 'fixed';
+            $detailPesanan->product_tax_amount = 0;
             $detailPesanan->save();
         }
 
