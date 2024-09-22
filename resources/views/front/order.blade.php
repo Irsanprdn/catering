@@ -668,7 +668,7 @@
                 .then(data => {
                     if (data.success) {
                         alert('Pesanan berhasil dikirim');
-                        window.location.reload();
+                        window.location.href = '/catering?invoice_no='+data.id
 
                     } else {
                         alert('Terjadi kesalahan: ' + data.message);

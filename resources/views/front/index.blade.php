@@ -115,7 +115,7 @@
                 <td>INV/{{$pesanan->reference}}</td>
                 <td>{{$pesanan->customer_name}}</td>
                 <td>{{$pesanan->status}}</td>
-                <td>{{$pesanan->total_amount}}</td>
+                <td>Rp. {{ number_format($pesanan->total_amount)}}</td>
               </tr>
             </tbody>
           </table>
@@ -132,7 +132,7 @@
               @foreach($pesanan->quotationDetails as $v)
               <tr>
                 <td>{{$v->product_name}}</td>
-                <td>{{$v->price}}</td>
+                <td>Rp.{{ number_format($v->price)}}</td>
                 <td>{{$v->quantity}}</td>
               </tr>
               @endforeach

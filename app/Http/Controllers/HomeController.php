@@ -10,7 +10,6 @@ use Modules\Purchase\Entities\PurchasePayment;
 use Modules\PurchasesReturn\Entities\PurchaseReturn;
 use Modules\PurchasesReturn\Entities\PurchaseReturnPayment;
 use Modules\Sale\Entities\Sale;
-use Modules\Quotation\Entities\Quotation;
 use Modules\Sale\Entities\SalePayment;
 use Modules\SalesReturn\Entities\SaleReturn;
 use Modules\SalesReturn\Entities\SaleReturnPayment;
@@ -111,7 +110,7 @@ class HomeController extends Controller
         $quotation->discount_percentage = 0;
         $quotation->discount_amount = 0;
         $quotation->shipping_amount = 0;
-        $quotation->total_amount = $request->total_harga;
+        $quotation->total_amount = $request->total_harga.'00';
         $quotation->status = 'Pending';
         $quotation->payment_status = $request->metode_pembayaran;
         $quotation->payment_evidence = $filePath; // Simpan path file
@@ -127,17 +126,17 @@ class HomeController extends Controller
             $product = Product::where('id', $item['id'])->first();
             $detailPesanan->product_name = $product->product_name;
             $detailPesanan->product_code = $product->product_code;
-            $detailPesanan->price = $product->product_price;
-            $detailPesanan->unit_price = $product->product_price;
+            $detailPesanan->price = $product->product_price.'00';
+            $detailPesanan->unit_price = $product->product_price.'00';
             $detailPesanan->quantity = $item['qty'];
-            $detailPesanan->sub_total = $product->product_price * $item['qty'];
+            $detailPesanan->sub_total = $product->product_price.'00' * $item['qty'];
             $detailPesanan->product_discount_amount = 0;
             $detailPesanan->product_discount_type = 'fixed';
             $detailPesanan->product_tax_amount = 0;
             $detailPesanan->save();
         }
 
-        return response()->json(['success' => true, 'message' => 'Pesanan berhasil disimpan']);
+        return response()->json(['success' => true, 'id' => $quotation->reference, 'message' => 'Pesanan berhasil disimpan']);
     }
 
     public function index()
